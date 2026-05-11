@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+.env
+
+artifacts/
+data/
+outputs/
+
+.DS_Store
+Thumbs.db

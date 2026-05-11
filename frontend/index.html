@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FuelCast Prediction</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, Arial, sans-serif;
+        background: #f6f7f9;
+        color: #1d2433;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px;
+      }
+
+      header {
+        margin-bottom: 22px;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 0 0 8px;
+      }
+
+      p {
+        margin: 0;
+        color: #586174;
+      }
+
+      label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 360px;
+        padding: 14px;
+        border: 1px solid #cdd3df;
+        border-radius: 8px;
+        font-family: Consolas, monospace;
+        font-size: 14px;
+        box-sizing: border-box;
+        resize: vertical;
+        background: #ffffff;
+      }
+
+      button {
+        margin-top: 14px;
+        border: 0;
+        border-radius: 8px;
+        background: #136f63;
+        color: white;
+        padding: 12px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        background: #8a94a6;
+        cursor: wait;
+      }
+
+      output {
+        display: block;
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #d9dee8;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>FuelCast Prediction</h1>
+        <p>Entrez une ligne JSON avec les variables du navire, puis lancez la prédiction.</p>
+      </header>
+
+      <label for="features">Features JSON</label>
+      <textarea id="features">{
+  "Ship_SpeedOverGround": 12.4,
+  "Ship_SpeedThroughWater": 12.1,
+  "Weather_WindSpeed10M": 8.2,
+  "Weather_WaveHeight": 1.4,
+  "Weather_OceanCurrentVelocity": 0.3,
+  "Propeller_Port_ShaftPower": 5200000,
+  "Propeller_Starboard_ShaftPower": 5250000
+}</textarea>
+
+      <button id="predict">Predict</button>
+      <output id="result">Résultat en attente.</output>
+    </main>
+
+    <script>
+      const button = document.querySelector("#predict");
+      const textarea = document.querySelector("#features");
+      const result = document.querySelector("#result");
+
+      button.addEventListener("click", async () => {
+        button.disabled = true;
+        result.textContent = "Calcul en cours...";
+
+        try {
+          const features = JSON.parse(textarea.value);
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ features })
+          });
+
+          if (!response.ok) {
+            throw new Error(await response.text());
+          }
+
+          const payload = await response.json();
+          result.textContent =
+            "Consommation fuel prédite: " +
+            payload.predicted_fuel_consumption.toFixed(6);
+        } catch (error) {
+          result.textContent = "Erreur: " + error.message;
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
