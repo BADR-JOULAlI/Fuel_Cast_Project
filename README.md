@@ -49,14 +49,17 @@ PYTHONPATH=src python scripts/train_model.py \
   --hf-repo-id username/fuelcast-model
 ```
 
-L'API peut ensuite charger le modèle depuis Hugging Face:
+Le nouveau projet fullstack peut ensuite charger le modèle depuis Hugging Face:
 
 ```bash
 export HF_MODEL_REPO=username/fuelcast-model
 ```
 
-L'application fullstack doit être créée dans un projet séparé et utiliser cette
-variable `HF_MODEL_REPO` pour télécharger le modèle.
+Dans cette machine, ce projet séparé est:
+
+```text
+C:\Users\anony\Downloads\Fuel_Cast_Fullstack
+```
 
 ## GitHub puis Lightning AI
 
