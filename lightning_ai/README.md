@@ -25,15 +25,7 @@ Si le calcul reste trop long, commence avec un échantillon:
 PYTHONPATH=src python scripts/train_model.py --model random_forest --sample-size 30000 --output-dir artifacts
 ```
 
-5. Lancer l'API + interface web:
-
-```bash
-uvicorn api.main:app --host 0.0.0.0 --port 8000
-```
-
-6. Ouvrir le port `8000` depuis l'interface Lightning AI.
-
-## Upload optionnel vers Hugging Face
+5. Pousser le modèle vers Hugging Face.
 
 Définir un token Hugging Face dans l'environnement:
 
@@ -50,3 +42,5 @@ PYTHONPATH=src python scripts/train_model.py \
   --push-to-hub \
   --hf-repo-id username/fuelcast-model
 ```
+
+Le projet fullstack sera séparé et utilisera le repo Hugging Face créé ici.

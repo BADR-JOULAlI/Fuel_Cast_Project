@@ -54,6 +54,65 @@ def save_json(path: Path, payload):
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
+def write_model_card(path: Path, metrics: dict):
+    content = f"""---
+library_name: scikit-learn
+tags:
+- regression
+- tabular-regression
+- fuel-consumption
+- fuelcast
+---
+
+# FuelCast Regression Model
+
+This model predicts `Consumer_Total_MomentaryFuel` from ship, propulsion, and
+weather variables from the FuelCast dataset.
+
+## Training
+
+- Dataset: `krohnedigital/FuelCast`
+- Config: `cps_poseidon`
+- Model: `{metrics["model"]}`
+- Rows used: `{metrics["rows"]}`
+- Target: `{metrics["target"]}`
+
+## Metrics
+
+| Metric | Value |
+| --- | ---: |
+| R2 | {metrics["r2"]:.4f} |
+| RMSE | {metrics["rmse"]:.4f} |
+| MAE | {metrics["mae"]:.4f} |
+
+## Files
+
+- `fuelcast_model.joblib`: complete scikit-learn pipeline
+- `metrics.json`: evaluation metrics
+- `input_schema.json`: expected raw input columns
+- `sample_input.json`: example input row
+- `feature_importances.csv`: feature importance when available
+
+## Usage
+
+```python
+from huggingface_hub import hf_hub_download
+import joblib
+import pandas as pd
+
+model_path = hf_hub_download(
+    repo_id="username/fuelcast-model",
+    filename="fuelcast_model.joblib",
+)
+model = joblib.load(model_path)
+
+sample = pd.DataFrame([{{"Ship_SpeedOverGround": 12.4}}])
+prediction = model.predict(sample)
+```
+"""
+    path.write_text(content, encoding="utf-8")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Train FuelCast model for Lightning AI.")
     parser.add_argument("--model", choices=["random_forest", "gradient_boosting"], default="random_forest")
@@ -117,6 +176,7 @@ def main():
     save_json(output_dir / "metrics.json", metrics)
     save_json(output_dir / "input_schema.json", {"columns": X.columns.tolist(), "target": TARGET})
     save_json(output_dir / "sample_input.json", X_test.iloc[0].to_dict())
+    write_model_card(output_dir / "README.md", metrics)
 
     model = pipeline.named_steps["model"]
     preprocessor = pipeline.named_steps["preprocessor"]

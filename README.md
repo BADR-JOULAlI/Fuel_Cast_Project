@@ -1,11 +1,11 @@
-# FuelCast Project
+# FuelCast Training Project
 
 Projet de prédiction de consommation fuel pour le dataset
 `krohnedigital/FuelCast`.
 
 Le notebook principal reste disponible dans `Fuel_Cast_Project.ipynb`. Cette
-structure ajoute une version exécutable sur Lightning AI et réutilisable dans
-une interface web.
+structure sert uniquement à entraîner le modèle sur Lightning AI et à pousser
+les artefacts vers Hugging Face.
 
 ## Structure
 
@@ -13,8 +13,6 @@ une interface web.
 Fuel_Cast_Project.ipynb        Notebook d'analyse et de modélisation
 src/fuelcast/                  Préprocessing réutilisable
 scripts/train_model.py         Entraînement + export du modèle
-api/main.py                    API FastAPI de prédiction
-frontend/index.html            Interface web simple
 lightning_ai/                  Instructions et script pour Lightning AI
 requirements.txt               Dépendances Python
 ```
@@ -40,16 +38,6 @@ Le script sauvegarde:
 - `artifacts/sample_input.json`
 - `artifacts/feature_importances.csv`
 
-## Lancer l'interface web
-
-Après entraînement:
-
-```bash
-uvicorn api.main:app --host 0.0.0.0 --port 8000
-```
-
-Puis ouvrir `http://localhost:8000`.
-
 ## Pousser le modèle vers Hugging Face
 
 ```bash
@@ -65,8 +53,10 @@ L'API peut ensuite charger le modèle depuis Hugging Face:
 
 ```bash
 export HF_MODEL_REPO=username/fuelcast-model
-uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
+
+L'application fullstack doit être créée dans un projet séparé et utiliser cette
+variable `HF_MODEL_REPO` pour télécharger le modèle.
 
 ## GitHub puis Lightning AI
 
