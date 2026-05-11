@@ -70,13 +70,10 @@ uvicorn api.main:app --host 0.0.0.0 --port 8000
 
 ## GitHub puis Lightning AI
 
-Ce dossier n'était pas encore un dépôt Git. Pour le pousser:
+Ce dossier est déjà initialisé comme dépôt Git local sur la branche `main`.
+Pour le pousser vers GitHub, créer d'abord un repo vide sur GitHub, puis lancer:
 
 ```bash
-git init
-git add .
-git commit -m "prepare fuelcast lightning ai project"
-git branch -M main
 git remote add origin https://github.com/USERNAME/fuelcast-project.git
 git push -u origin main
 ```
