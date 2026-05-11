@@ -21,13 +21,13 @@ requirements.txt               Dépendances Python
 
 ```bash
 pip install -r requirements.txt
-PYTHONPATH=src python scripts/train_model.py --model random_forest --output-dir artifacts
+python scripts/train_model.py --model random_forest --output-dir artifacts
 ```
 
 Pour réduire le coût de calcul pendant les tests:
 
 ```bash
-PYTHONPATH=src python scripts/train_model.py --model random_forest --sample-size 30000
+python scripts/train_model.py --model random_forest --sample-size 30000
 ```
 
 Le script sauvegarde:
@@ -42,7 +42,7 @@ Le script sauvegarde:
 
 ```bash
 export HF_TOKEN=hf_xxx
-PYTHONPATH=src python scripts/train_model.py \
+python scripts/train_model.py \
   --model random_forest \
   --output-dir artifacts \
   --push-to-hub \

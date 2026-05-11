@@ -16,13 +16,13 @@ pip install -r requirements.txt
 4. Lancer l'entraînement:
 
 ```bash
-PYTHONPATH=src python scripts/train_model.py --model random_forest --output-dir artifacts
+python scripts/train_model.py --model random_forest --output-dir artifacts
 ```
 
 Si le calcul reste trop long, commence avec un échantillon:
 
 ```bash
-PYTHONPATH=src python scripts/train_model.py --model random_forest --sample-size 30000 --output-dir artifacts
+python scripts/train_model.py --model random_forest --sample-size 30000 --output-dir artifacts
 ```
 
 5. Pousser le modèle vers Hugging Face.
@@ -36,7 +36,7 @@ export HF_TOKEN=hf_xxx
 Puis:
 
 ```bash
-PYTHONPATH=src python scripts/train_model.py \
+python scripts/train_model.py \
   --model random_forest \
   --output-dir artifacts \
   --push-to-hub \
